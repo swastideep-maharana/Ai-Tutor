@@ -11,6 +11,8 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        border: "var(--border)",     // Add this line
+        ring: "var(--ring)",         // Add this line
       },
     },
   },
