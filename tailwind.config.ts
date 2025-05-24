@@ -54,6 +54,8 @@ export default {
       },
       screens: {
         "min-lg": "1024px",
+        "min-md": "768px",
+        "min-2xl": "1536px",
       },
       borderRadius: {
         "4xl": "2rem",
