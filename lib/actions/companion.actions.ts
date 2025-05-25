@@ -113,11 +113,10 @@ export const getUserCompanions = async (userId: string) => {
   return data;
 };
 
-export const newCompanionPermissions = async (
-  userId: string,
-  has: (perm: { plan?: string; feature?: string }) => boolean
-) => {
+export const newCompanionPermissions = async () => {
+  const { userId, has } = await auth();
   const supabase = createSupabaseClient();
+
   let limit = 0;
 
   if (has({ plan: "pro" })) {
@@ -128,16 +127,22 @@ export const newCompanionPermissions = async (
     limit = 10;
   }
 
-  // Use 'head: true' with 'select' to get count only without data
-  const { count, error } = await supabase
+  const { data, error } = await supabase
     .from("companions")
-    .select("id", { count: "exact", head: true })
+    .select("id", { count: "exact" })
     .eq("author", userId);
 
   if (error) throw new Error(error.message);
 
-  return (count ?? 0) < limit;
+  const companionCount = data?.length;
+
+  if (companionCount >= limit) {
+    return false;
+  } else {
+    return true;
+  }
 };
+
 // Bookmarks
 export const addBookmark = async (companionId: string, path: string) => {
   const { userId } = await auth();
