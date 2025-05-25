@@ -1,7 +1,9 @@
+"use client";
+import { removeBookmark } from "@/lib/actions/companion.actions";
+import { addBookmark } from "@/lib/actions/companion.actions";
 import Image from "next/image";
-// import { button } from "./ui/button";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { usePathname } from "next/navigation";
 
 interface CompanionCardProps {
   id: string;
@@ -10,6 +12,7 @@ interface CompanionCardProps {
   subject: string;
   duration: number;
   color: string;
+  bookmarked: boolean;
 }
 
 const CompanionCard = ({
@@ -19,19 +22,30 @@ const CompanionCard = ({
   subject,
   duration,
   color,
+  bookmarked,
 }: CompanionCardProps) => {
+  const pathname = usePathname();
+  const handleBookmark = async () => {
+    if (bookmarked) {
+      await removeBookmark(id, pathname);
+    } else {
+      await addBookmark(id, pathname);
+    }
+  };
   return (
     <article className="companion-card" style={{ backgroundColor: color }}>
       <div className="flex justify-between items-center">
         <div className="subject-badge">{subject}</div>
-        <Button className="comanion-bookmark">
+        <button className="companion-bookmark" onClick={handleBookmark}>
           <Image
-            src="/icons/bookmark.svg"
+            src={
+              bookmarked ? "/icons/bookmark-filled.svg" : "/icons/bookmark.svg"
+            }
             alt="bookmark"
             width={12.5}
             height={15}
           />
-        </Button>
+        </button>
       </div>
 
       <h2 className="text-2xl font-bold">{name}</h2>
@@ -43,13 +57,13 @@ const CompanionCard = ({
           width={13.5}
           height={13.5}
         />
-        <p className="texsm">{duration}mins duration</p>
+        <p className="text-sm">{duration} minutes</p>
       </div>
 
       <Link href={`/companions/${id}`} className="w-full">
-        <Button className="btn-ghost w-full justify-center">
+        <button className="btn-primary w-full justify-center">
           Launch Lesson
-        </Button>
+        </button>
       </Link>
     </article>
   );

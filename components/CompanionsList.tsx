@@ -1,99 +1,209 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { cn, getSubjectColor } from "@/lib/utils";
-import Link from "next/link";
-import Image from "next/image";
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { subjects } from "@/constants";
+import { Textarea } from "@/components/ui/textarea";
+import { createCompanion } from "@/lib/actions/companion.actions";
+import { redirect } from "next/navigation";
 
-interface CompanionsListProps {
-  title: string;
-  companions?: Companion[];
-  classNames?: string;
-}
+const formSchema = z.object({
+  name: z.string().min(1, { message: "Companion is required." }),
+  subject: z.string().min(1, { message: "Subject is required." }),
+  topic: z.string().min(1, { message: "Topic is required." }),
+  voice: z.string().min(1, { message: "Voice is required." }),
+  style: z.string().min(1, { message: "Style is required." }),
+  duration: z.coerce.number().min(1, { message: "Duration is required." }),
+});
 
-const CompanionsList = ({
-  title,
-  companions,
-  classNames,
-}: CompanionsListProps) => {
+const CompanionForm = () => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      subject: "",
+      topic: "",
+      voice: "",
+      style: "",
+      duration: 15,
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const companion = await createCompanion(values);
+
+    if (companion) {
+      redirect(`/companions/${companion.id}`);
+    } else {
+      console.log("Failed to create a companion");
+      redirect("/");
+    }
+  };
+
   return (
-    <article className={cn("companion-list", classNames)}>
-      <h2 className="font-bold text-3xl">{title}</h2>
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-lg w-2/3">Lessons</TableHead>
-            <TableHead className="text-lg">Subject</TableHead>
-            <TableHead className="text-lg text-right">Duration</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {companions?.map(({ id, subject, name, topic, duration }) => (
-            <TableRow key={id}>
-              <TableCell>
-                <Link href={`/companions/${id}`}>
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="size-[72px] flex items-center justify-center rounded-lg max-md:hidden"
-                      style={{ backgroundColor: getSubjectColor(subject) }}
-                    >
-                      <Image
-                        src={`/icons/${subject}.svg`}
-                        alt={subject}
-                        width={35}
-                        height={35}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <p className="font-bold text-2xl">{name}</p>
-                      <p className="text-lg">{topic}</p>
-                    </div>
-                  </div>
-                </Link>
-              </TableCell>
-              <TableCell>
-                <div className="subject-badge w-fit max-md:hidden">
-                  {subject}
-                </div>
-                <div
-                  className="flex items-center justify-center rounded-lg w-fit p-2 md:hidden"
-                  style={{ backgroundColor: getSubjectColor(subject) }}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Companion name</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter the companion name"
+                  {...field}
+                  className="input"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="subject"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Subject</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
                 >
-                  <Image
-                    src={`/icons/${subject}.svg`}
-                    alt={subject}
-                    width={18}
-                    height={18}
-                  />
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2 w-full justify-end">
-                  <p className="text-2xl">
-                    {duration} <span className="max-md:hidden">mins</span>
-                  </p>
-                  <Image
-                    src="/icons/clock.svg"
-                    alt="minutes"
-                    width={14}
-                    height={14}
-                    className="md:hidden"
-                  />
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </article>
+                  <SelectTrigger className="input capitalize">
+                    <SelectValue placeholder="Select the subject" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {subjects.map((subject) => (
+                      <SelectItem
+                        value={subject}
+                        key={subject}
+                        className="capitalize"
+                      >
+                        {subject}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="topic"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>What should the companion help with?</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Ex. Derivates & Integrals"
+                  {...field}
+                  className="input"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="voice"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Voice</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger className="input">
+                    <SelectValue placeholder="Select the voice" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="style"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Style</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger className="input">
+                    <SelectValue placeholder="Select the style" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="formal">Formal</SelectItem>
+                    <SelectItem value="casual">Casual</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="duration"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Estimated session duration in minutes</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="15"
+                  {...field}
+                  className="input"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="w-full cursor-pointer">
+          Build Your Companion
+        </Button>
+      </form>
+    </Form>
   );
 };
 
-export default CompanionsList;
+export default CompanionForm;
