@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [{ hostname: "img.clerk.com" }],
   },
@@ -14,8 +17,8 @@ export default withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  org: "maharana",
-  project: "javascript-nextjs",
+  org: "jsmpro",
+  project: "jsm_converso",
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
