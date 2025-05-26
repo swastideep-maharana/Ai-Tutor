@@ -43,3 +43,4 @@ CREATE TABLE IF NOT EXISTS bookmarks (
 -- Indexes for bookmarks
 CREATE INDEX IF NOT EXISTS bookmarks_user_id_idx ON bookmarks(user_id);
 CREATE INDEX IF NOT EXISTS bookmarks_companion_id_idx ON bookmarks(companion_id);
+
