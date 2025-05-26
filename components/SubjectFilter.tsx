@@ -15,7 +15,7 @@ import { formUrlQuery, removeKeysFromUrlQuery } from "@jsmastery/utils";
 const SubjectFilter = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const query = searchParams.get("subject") || "";
+  const query = searchParams.get("subject") || "all";
 
   const [subject, setSubject] = useState(query);
 
@@ -34,22 +34,30 @@ const SubjectFilter = () => {
       });
     }
     router.push(newUrl, { scroll: false });
-  }, [subject]);
+  }, [subject, router, searchParams]);
 
   return (
-    <Select onValueChange={setSubject} value={subject}>
-      <SelectTrigger className="input capitalize">
-        <SelectValue placeholder="Subject" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="all">All subjects</SelectItem>
-        {subjects.map((subject) => (
-          <SelectItem key={subject} value={subject} className="capitalize">
-            {subject}
+    <div className="relative border border-black rounded-lg flex items-center gap-2 px-2 py-1 h-fit">
+      <Select onValueChange={setSubject} value={subject}>
+        <SelectTrigger className="w-full outline-none bg-transparent text-gray-800 cursor-pointer">
+          <SelectValue placeholder="Subject" className="capitalize" />
+        </SelectTrigger>
+        <SelectContent className="bg-white rounded-lg shadow-lg">
+          <SelectItem value="all" className="capitalize hover:bg-orange-100">
+            All subjects
           </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+          {subjects.map((subject) => (
+            <SelectItem
+              key={subject}
+              value={subject}
+              className="capitalize hover:bg-orange-100"
+            >
+              {subject}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 };
 

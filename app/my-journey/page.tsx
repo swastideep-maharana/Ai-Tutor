@@ -24,50 +24,61 @@ const Profile = async () => {
   const bookmarkedCompanions = await getBookmarkedCompanions(user.id);
 
   return (
-    <main className="min-lg:w-3/4">
-      <section className="flex justify-between gap-4 max-sm:flex-col items-center">
-        <div className="flex gap-4 items-center">
+    <main className="min-lg:w-3/4 mx-auto p-6 bg-white text-orange-600 rounded-2xl shadow-lg">
+      <section className="flex flex-col sm:flex-row justify-between items-center gap-8 border-b border-orange-300 pb-8 mb-8">
+        <div className="flex items-center gap-6">
           <Image
             src={user.imageUrl}
             alt={user.firstName!}
             width={110}
             height={110}
+            className="rounded-full border-4 border-orange-600"
           />
-          <div className="flex flex-col gap-2">
-            <h1 className="font-bold text-2xl">
+          <div>
+            <h1 className="font-extrabold text-3xl text-orange-600">
               {user.firstName} {user.lastName}
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-orange-400 mt-1">
               {user.emailAddresses[0].emailAddress}
             </p>
           </div>
         </div>
-        <div className="flex gap-4">
-          <div className="border border-black rouded-lg p-3 gap-2 flex flex-col h-fit">
-            <div className="flex gap-2 items-center">
+
+        <div className="flex gap-6">
+          <div className="bg-orange-600 text-white rounded-xl p-6 shadow-md flex flex-col items-center min-w-[140px]">
+            <div className="flex items-center gap-3 mb-2">
               <Image
                 src="/icons/check.svg"
                 alt="checkmark"
-                width={22}
-                height={22}
+                width={24}
+                height={24}
               />
-              <p className="text-2xl font-bold">{sessionHistory.length}</p>
+              <span className="text-4xl font-extrabold">
+                {sessionHistory.length}
+              </span>
             </div>
-            <div>Lessons completed</div>
+            <p className="font-semibold">Lessons Completed</p>
           </div>
-          <div className="border border-black rouded-lg p-3 gap-2 flex flex-col h-fit">
-            <div className="flex gap-2 items-center">
-              <Image src="/icons/cap.svg" alt="cap" width={22} height={22} />
-              <p className="text-2xl font-bold">{companions.length}</p>
+
+          <div className="bg-orange-600 text-white rounded-xl p-6 shadow-md flex flex-col items-center min-w-[140px]">
+            <div className="flex items-center gap-3 mb-2">
+              <Image src="/icons/cap.svg" alt="cap" width={24} height={24} />
+              <span className="text-4xl font-extrabold">
+                {companions.length}
+              </span>
             </div>
-            <div>Companions created</div>
+            <p className="font-semibold">Companions Created</p>
           </div>
         </div>
       </section>
-      <Accordion type="multiple">
-        <AccordionItem value="bookmarks">
-          <AccordionTrigger className="text-2xl font-bold">
-            Bookmarked Companions {`(${bookmarkedCompanions.length})`}
+
+      <Accordion type="multiple" className="space-y-6">
+        <AccordionItem
+          value="bookmarks"
+          className="border border-orange-300 rounded-xl bg-orange-100 p-4"
+        >
+          <AccordionTrigger className="text-2xl font-semibold text-orange-600 hover:text-orange-800 cursor-pointer">
+            Bookmarked Companions ({bookmarkedCompanions.length})
           </AccordionTrigger>
           <AccordionContent>
             <CompanionsList
@@ -76,8 +87,12 @@ const Profile = async () => {
             />
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="recent">
-          <AccordionTrigger className="text-2xl font-bold">
+
+        <AccordionItem
+          value="recent"
+          className="border border-orange-300 rounded-xl bg-orange-100 p-4"
+        >
+          <AccordionTrigger className="text-2xl font-semibold text-orange-600 hover:text-orange-800 cursor-pointer">
             Recent Sessions
           </AccordionTrigger>
           <AccordionContent>
@@ -87,9 +102,13 @@ const Profile = async () => {
             />
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="companions">
-          <AccordionTrigger className="text-2xl font-bold">
-            My Companions {`(${companions.length})`}
+
+        <AccordionItem
+          value="companions"
+          className="border border-orange-300 rounded-xl bg-orange-100 p-4"
+        >
+          <AccordionTrigger className="text-2xl font-semibold text-orange-600 hover:text-orange-800 cursor-pointer">
+            My Companions ({companions.length})
           </AccordionTrigger>
           <AccordionContent>
             <CompanionsList title="My Companions" companions={companions} />
@@ -99,4 +118,5 @@ const Profile = async () => {
     </main>
   );
 };
+
 export default Profile;
