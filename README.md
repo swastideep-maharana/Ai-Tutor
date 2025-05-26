@@ -1,37 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Tutor Companion 🤖
 
-## Getting Started
+An intelligent tutoring platform powered by AI companions that helps users master various subjects through personalized interactive conversations.
 
-First, run the development server:
+## ✨ Core Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 🎯 Learning Experience
+
+- **Personalized AI Tutors**
+
+  - Custom subject expertise
+  - Adaptive teaching styles
+  - Voice personality selection
+  - Duration control (1-120 minutes)
+
+- **Interactive Sessions**
+  - Real-time conversations
+  - Progress tracking
+  - Session history
+  - Bookmarking system
+
+### 🗣️ Voice Assistant Features
+
+- **Text-to-Speech**
+
+  - Natural voice synthesis
+  - Multiple voice personalities
+  - Adjustable speech rate
+  - Language support for multiple accents
+
+- **Voice Interaction**
+  - Real-time voice responses
+  - Voice command recognition
+  - Dynamic conversation flow
+  - Accent adaptation
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Voice Integration**: VAPI
+
+### Backend
+
+- **Authentication**: Clerk
+- **Database**: Supabase
+- **State Management**: React Context
+- **Speech Services**: VAPI Cloud
+
+## 📁 Project Structure
+
+```
+ai-app/
+├── app/                 # Next.js pages & routes
+├── components/         # Reusable UI components
+│   └── voice/         # Voice-related components
+├── lib/               # Utilities & server actions
+│   └── vapi/         # VAPI configuration & hooks
+├── public/           # Static assets
+└── types/           # TypeScript definitions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Features in Detail
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### AI Companions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Create custom tutors
+- Select teaching styles
+- Set session durations
+- Choose voice personalities
+- Voice-enabled interactions
 
-## Learn More
+### Voice Interface
 
-To learn more about Next.js, take a look at the following resources:
+- Natural voice synthesis
+- Multiple voice options
+- Speech recognition
+- Real-time responses
+- Voice command support
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### User Journey
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Track learning progress
+- Save favorite companions
+- Review session history
+- Bookmark for quick access
+- Voice interaction history
 
-## Deploy on Vercel
+### Learning Tools
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Interactive conversations
+- Real-time responses
+- Progress analytics
+- Session management
+- Voice-assisted learning
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# Ai-Tutor" 
+### Performance
+
+- Server-side rendering
+- Optimized routing
+- Type-safe codebase
+- Responsive design
+- Low-latency voice processing
+
+---
+
+⭐ Star this repo if you found it helpful!
